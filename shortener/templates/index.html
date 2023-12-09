@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darrin's URL Shortener</title>
+    <link rel="stylesheet" href="{% static "shortener/css/style.css" %}">
+<!--    <link rel="stylesheet" href="css/forms.css">-->
+    <link rel="stylesheet" href="{% static "shortener/css/fieldset.css" %}">
+    <link rel="stylesheet" href="{% static "shortener/css/table.css" %}">
+</head>
+
+<body>
+    <header>
+        <div id="logo">Darrin's URL Shortener</div>
+        <nav>
+            <a href="">Search</a>
+            <a href="">Login</a>
+        </nav>
+    </header>
+    <div class="wrapper">
+        <main>
+<!--            <form>-->
+<!--                <label for="long_url">URL:</label>-->
+<!--                <input type="text" id="long_url" name="long_url" required><br>-->
+<!--                <label for="short_key">https://s/</label>-->
+<!--                <input type="text" id="short_key" name="short_key" required><br>-->
+<!--                <label for="keep_for">Keep for:</label>-->
+<!--                <select id="keep_for" name="keep_for" required>-->
+<!--                    <option value="1">1 month</option>-->
+<!--                    <option value="3">3 months</option>-->
+<!--                    <option value="6">6 months</option>-->
+<!--                    <option value="12">12 months</option>-->
+<!--                </select><br>-->
+<!--                <input type="checkbox" id="acknowledgment" name="acknowledgment" required>-->
+<!--                <label for="acknowledgment" id="acknowledge-text">I acknowledge that s/ short URLs are only accessible within the internal-->
+<!--                    network and confirm that I will not embed short URLs in production applications.</label>-->
+<!--                <button type="submit">submit</button>-->
+<!--            </form>-->
+            <form>
+                <fieldset>
+                    <label for="long_url">url</label>
+                    <input type="text" id="long_url" name="long_url" required><br>
+                    <label for="short_key">https://d.b/</label>
+                    <input type="text" id="short_key" name="short_key" required><br>
+                    <label for="tags">tags</label>
+                    <input type="text" id="tags" name="tags" required><br>
+                    <label for="keep_for">keep active for</label>
+                    <select id="keep_for" name="keep_for" required>
+                        <option value="1">1 month</option>
+                        <option value="3">3 months</option>
+                        <option value="6">6 months</option>
+                        <option value="12">12 months</option>
+                    </select><br>
+                    <label class="checkbox-label" for="acknowledgment" id="acknowledge-text">
+                        <input type="checkbox" id="acknowledgment" name="acknowledgment" required>
+                        I acknowledge that s/ short URLs are only accessible within the internal
+                        network and confirm that I will not embed short URLs in production applications.
+                    </label>
+                    <div><button type="submit" style="">Shorten it!</button></div>
+                </fieldset>
+<!--                placeholder-->
+                <div style="margin: 25px;"></div>
+            </form>
+            <form action="">
+                <fieldset>
+                    <label for="domain">URL</label>
+                    <input type="text" id="domain" name="domain" required><br>
+                    <label for="short_key">short key</label>
+                    <input type="text" id="short_key" name="short_key" required><br>
+                    <label for="tags">tags</label>
+                    <input type="text" id="tags" name="tags" required><br>
+                    <label for="owner">owner</label>
+                    <input type="text" id="owner" name="owner" required><br>
+                    <label for="created_before">created before</label>
+                    <input type="text" id="created_before" name="created_before" required><br>
+                    <label for="created_after">created after</label>
+                    <input type="text" id="created_after" name="created_after" required>
+                    <div><button type="submit" style="">Search</button></div>
+                </fieldset>
+            </form>
+            <!--                placeholder-->
+                <div style="margin: 25px;"></div>
+
+            <div>
+                <table>
+                    <tr>
+                        <th>key</th>
+                        <th>long url</th>
+                        <th>owner</th>
+                        <th>created</th>
+                        <th>hits</th>
+                    </tr>
+                    <tr>
+                        <th><a href="https://detail-view.dblab.com"</a>db</th>
+                        <th><a href="https://darrins-website.dblab.com"</a>https://darrins-website.dblab.com</th>
+                        <th>darrin</th>
+                        <th>10-29-23</th>
+                        <th>10,000</th>
+                    </tr>
+                </table>
+            </div>
+        </main>
+    </div>
+    <footer>&copy; For internal use only. Contains information that may not be disclosed externally.</footer>
+</body>
+
+</html>

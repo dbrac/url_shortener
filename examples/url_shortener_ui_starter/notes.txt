@@ -1,0 +1,29 @@
+Search form
+Domain (only support one initially which will be something similiar to s.f)
+long url
+short key
+tags
+owner
+created before
+created after
+paging (won't need initially)
+Search button
+
+display results below the table and leave the search form visible to make subsquent searches easy.
+
+I'll also need to build a "details" view where we display the detials of a shortener entry and allow for changes to be made
+look at the s.f web page for example
+
+model will look similiar to this:
+key (short name)
+long url
+tags
+owner
+created date
+hits
+last hit date
+delete date (auto delete after keep for x days expires)
+
+backend
+basically just a crud for this model with some good query strings
+
