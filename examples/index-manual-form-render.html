@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darrin's URL Shortener</title>
+<!--    <link rel="stylesheet" href="{% static "shortener/css/style.css" %}">-->
+<!--    <link rel="stylesheet" href="{% static "shortener/css/fieldset.css" %}">-->
+<!--    <link rel="stylesheet" href="{% static "shortener/css/table.css" %}">-->
+<!--    <link rel="stylesheet" href="{% static "shortener/css/forms.css" %}">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<div class="container">
+<body>
+    <header>
+        <div id="logo">Darrin's URL Shortener</div>
+        <nav>
+            <a href="{% url 'search' %}">Search</a>
+            <a href="">Login</a>
+        </nav>
+    </header>
+    <div class="wrapper">
+        <main>
+            <form action="/" method="POST">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {{ form }}
+<!--                you can list out fields individually but it wasn't heping styling issue for form errors-->
+<!--                <div class="fieldWrapper">-->
+<!--                    <label for="{{ form.url.id_for_label }}">URL:</label>-->
+<!--                    {{ form.url }}-->
+<!--                    {{ form.url.errors }}-->
+<!--                </div>-->
+<!--                <div class="fieldWrapper">-->
+<!--                    <label for="{{ form.short_key.id_for_label }}">https://d.b/:</label>-->
+<!--                    {{ form.short_key }}-->
+<!--                    {{ form.short_key.errors }}-->
+<!--                </div>-->
+<!--                <div class="fieldWrapper">-->
+<!--                    <label for="{{ form.tags.id_for_label }}">tags:</label>-->
+<!--                    {{ form.tags }}-->
+<!--                    {{ form.tags.errors }}-->
+<!--                </div>-->
+<!--                <div class="fieldWrapper">-->
+<!--                    <label for="{{ form.tags.id_for_label }}">keep for:</label>-->
+<!--                    {{ form.tags }}-->
+<!--                    {{ form.tags.errors }}-->
+<!--                </div>-->
+                {% if messages %}
+                    <ul class="messages" style="font-weight: bold; text-align: center">
+                        {% for message in messages %}
+                        <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <div><button type="submit" style="">Shorten it!</button></div>
+            </form>
+        </main>
+    </div>
+    <footer>&copy; For internal use only. Contains information that may not be disclosed externally.</footer>
+</body>
+
+</html>

@@ -1,57 +1,11 @@
-*{
-    box-sizing: border-box;
-}
+
 
 body{
     background-color: #e3e2e1;
-    margin: 20px 0;
-    font-family: sans-serif;
-    min-height: 97vh;
-    display: flex;
-    flex-direction: column;
 }
 
-.wrapper {
-    width: 75%;
-    margin: 0 auto;
-    background-color: #ffffff;
-    border-radius: 10px;
-}
 
 header{
-    padding: 10px;
-    overflow: auto;
     background-color: #0B162A;
     color: #C83803;
-    margin-bottom: 5%;
-    margin-top: -20px;
-}
-
-header > #logo{
-    font-size: 2em;
-    float: left;
-    margin: 0%;
-}
-
-nav{
-    float: right;
-}
-
-main{
-    padding: 50px;
-    overflow: auto;
-}
-
-/* footer{
-    padding-top: 10px;
-    text-align: center;
-    font-family: sans-serif;
-    bottom: 0;
-    position: absolute;
-    width: 100%
-} */
-
-footer {
-    margin-top: auto;
-    text-align: center;
 }

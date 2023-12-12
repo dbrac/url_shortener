@@ -5,9 +5,12 @@ main{
 fieldset {
   background-color: #ffffff;
   padding: 20px;
-  border: 2px solid black;
   border-radius: 3px;
   margin: auto;
+  width: 85%;
+  box-sizing: border-box;
+  float: right;
+  margin-right: 10px;
 }
 
 label{

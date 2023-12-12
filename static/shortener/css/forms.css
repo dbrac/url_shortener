@@ -12,16 +12,7 @@ form {
   padding: 1em;
   border: 1px solid #ccc;
   border-radius: 1em;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-form li + li {
-  margin-top: 1em;
+  background-color: #ffffff;
 }
 
 label {
