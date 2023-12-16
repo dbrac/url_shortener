@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from shortener.models import Shortener
+
 from .forms import NameForm, ShortenerForm, SearchForm
 from django.contrib import messages
 from .models import Shortener
@@ -10,6 +11,7 @@ class Index(View):
 
     def post(self, request):
         form = ShortenerForm(request.POST)
+        valid = form.is_valid()
         if form.is_valid():
             form.save()
             messages.success(request, 'Created Successfully!')

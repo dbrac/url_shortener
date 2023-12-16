@@ -1,9 +1,10 @@
 from django import forms
-from django.forms import ModelForm, SelectDateWidget
+from django.forms import ModelForm, SelectDateWidget, TextInput
 from shortener.models import Shortener
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from datetime import datetime
+import re
 
 class ShortenerForm(ModelForm):
     class Meta:
@@ -13,11 +14,26 @@ class ShortenerForm(ModelForm):
         # I ended up not doing this so I specify in the template as form labels how they would be presented
         labels = {
             'short_key': 'https://d.b/',
-            'active_duration': 'keep active for'
+            'active_duration': 'active for',
+            'tags': 'tags'
         }
+        widgets = {
+            "url": forms.URLInput(attrs={"class": "form-control"}),
+            "short_key": forms.TextInput(attrs={"class": "form-control"}),
+            "tags": forms.TextInput(attrs={"class": "form-control", "placeholder": "tag, tag, tag (comma separated)"}),
+            "active_duration": forms.Select(attrs={"class": "col-sm-8 form-select"})
+        }
+
+
+    # active_duration = forms.ChoiceField(widget=forms.Select(attrs={"class": "col-sm-8 form-select"}),
+    #                                     initial="keep active for", choices=Shortener.DURATIONS, required=True)
+    acknowledgment = forms.BooleanField(widget=forms.CheckboxInput(attrs={"class": "form-check-input"}))
 
     def clean_short_key(self):
         short_key = self.cleaned_data['short_key']
+        key_lookup = Shortener.objects.filter(short_key__contains=short_key)
+        if len(key_lookup) > 0:
+            raise ValidationError("Shortener already exists. Please use a unique name.")
         if not short_key.isalnum():
             raise ValidationError("only alphanumeric values allowed")
         return short_key
@@ -25,8 +41,9 @@ class ShortenerForm(ModelForm):
     def clean_tags(self):
         tags = self.cleaned_data['tags']
         # TODO allow comma's
-        # if not tags.isalnum():
-        #     raise ValidationError("only alphanumeric values allowed")
+        if  len(tags) > 0 and not re.search("^[0-9a-zA-Z]+(,[0-9a-zA-Z]+)*$", tags):
+            raise ValidationError("Only alphanumeric values separated by a single comma are allowed. Do not include "
+                                  "a trailing comma.")
         return tags
 
     def clean(self):

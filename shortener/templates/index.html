@@ -1,57 +1,135 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Darrin's URL Shortener</title>
-    <link rel="stylesheet" href="{% static "shortener/css/style.css" %}">
+<!--    <link rel="stylesheet" href="{% static "shortener/css/style.css" %}">-->
 <!--    <link rel="stylesheet" href="{% static "shortener/css/fieldset.css" %}">-->
 <!--    <link rel="stylesheet" href="{% static "shortener/css/table.css" %}">-->
 <!--    <link rel="stylesheet" href="{% static "shortener/css/forms.css" %}">-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {background-color: #e3e2e1;}
+        footer {background-color: #e3e2e1;}
+        .errorlist {color: red;}
+    </style>
 </head>
 
-<header>
-<div class="row">
-    <div class="col-lg-6">
-        <div id="logo">Darrin's URL Shortener</div>
-        <nav>
-            <a href="{% url 'search' %}">Search</a>
-            <a href="">Login</a>
-        </nav>
-    </div>
-<div>
-</header>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="column">
 
-                <div class="wrapper">
-                    <main>
-                        <form action="/" method="POST">
-                            {% csrf_token %}
-                            {{ form.non_field_errors }}
-                            {{ form }}
-                            {% if messages %}
-                                <ul class="messages" style="font-weight: bold; text-align: center">
-                                    {% for message in messages %}
-                                    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-                                    {% endfor %}
-                                </ul>
+<body class="bg-body">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+
+      <div class="container-fluid">
+        <a class="navbar-brand h3" href="#">Darrin's URL Shortener</a>
+        <ul class="navbar-nav navbar-right">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Search</a>
+          </li>
+        </ul>
+      </div>
+
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row m-5">
+            <div class="col"></div>
+            <div class="col">
+                <form action="/" method="POST" class="bg-light bg-gradient p-3 border border-secondary border-1 rounded border-opacity-25">
+                    {% csrf_token %}
+                    <div class="row mb-3 mt-5">
+                      <label for="{{ form.url.id_for_label }}" class="col-sm-2 col-form-label">{{ form.url.label }}</label>
+                      <div class="col-sm-10">
+                        {{ form.url }}
+                        {{ form.url.errors }}
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="{{ form.short_key.id_for_label }}" class="col-sm-2 col-form-label">{{ form.short_key.label }}</label>
+                      <div class="col-sm-10">
+                          {{ form.short_key }}
+                          {{ form.short_key.errors }}
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="{{ form.tags.id_for_label }}" class="col-sm-2 col-form-label">{{ form.tags.label }}</label>
+                      <div class="col-sm-10">
+                          {{ form.tags }}
+                          {{ form.tags.errors }}
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="{{ form.active_duration.id_for_label }}" class="col-form-label col-sm-2">
+                            {{ form.active_duration.label }}</label>
+                        <div class="col-sm-10">
+                            {{ form.active_duration }}
+                            {{ form.active_duration.errors }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-10 offset-sm-2">
+                            <div class="form-check">
+                                {{ form.acknowledgment }}
+                                {{ form.acknowledgment.error }}
+                              <label class="form-check-label" for="{{ form.acknowledgment.id_for_label }}">
+                                I acknowledge that s/ short URLs are only accessible within the internal
+                                network and confirm that I will not embed short URLs in production applications.
+                              </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="offset-sm-2">
+                            <button type="submit" class="btn btn-primary btn-secondary bg-gradient">Shorten it!</button>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-10 offset-sm-2">
+                            {% if form.non_field_errors %}
+                                <p style="color:red;">Errors:</p>
+                                {{ form.non_field_errors }}
                             {% endif %}
-                            <div><button type="submit" style="">Shorten it!</button></div>
-                        </form>
-                    </main>
-                </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-10 offset-sm-2">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <p class="messages" style="font-weight: bold;"> {{ message }} </p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <footer class="fixed-bottom text-center bg-dark text-light">
+                    <p class="m-0">&copy; For internal use only. Contains information that may not be disclosed externally.</p>
+                </footer>
             </div>
         </div>
+
     </div>
-    <footer>&copy; For internal use only. Contains information that may not be disclosed externally.</footer>
+
+
+    </div>
 </body>
 
 </html>

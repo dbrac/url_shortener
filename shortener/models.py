@@ -11,7 +11,9 @@ class Shortener(models.Model):
     }
     url = models.URLField(max_length=300)
     short_key = models.CharField(max_length=30)
-    tags = models.CharField(max_length=100)
+    tags = models.CharField(max_length=100, blank=True)
     active_duration = models.CharField(max_length=2, choices=DURATIONS)
     createdDate = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.short_key} -> {self.url}"
