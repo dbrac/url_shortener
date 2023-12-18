@@ -36,21 +36,9 @@
     </div>
 
     <div class="row mb-3">
-        <div class="col-sm-10 offset-sm-2">
-            <div class="form-check">
-                {{ form.acknowledgment }}
-                {{ form.acknowledgment.error }}
-              <label class="form-check-label" for="{{ form.acknowledgment.id_for_label }}">
-                I acknowledge that s/ short URLs are only accessible within the internal
-                network and confirm that I will not embed short URLs in production applications.
-              </label>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mb-3">
         <div class="offset-sm-2">
-            <button type="submit" class="btn btn-primary btn-secondary bg-gradient">Shorten it!</button>
+            <button type="submit" class="btn btn-primary btn-secondary bg-gradient">Update</button>
+            <button type="submit" class="btn btn-primary btn-secondary bg-gradient" formaction="shortener" method="Delete">Delete</button>
         </div>
     </div>
 

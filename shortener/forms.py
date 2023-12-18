@@ -31,7 +31,7 @@ class ShortenerForm(ModelForm):
 
     def clean_short_key(self):
         short_key = self.cleaned_data['short_key']
-        key_lookup = Shortener.objects.filter(short_key__contains=short_key)
+        key_lookup = Shortener.objects.filter(short_key__iexact=short_key)
         if len(key_lookup) > 0:
             raise ValidationError("Shortener already exists. Please use a unique name.")
         if not short_key.isalnum():
@@ -52,19 +52,36 @@ class ShortenerForm(ModelForm):
         # raise ValidationError("blah")
         return form_data
 
+class UpdateShortenerForm(ShortenerForm):
+    def clean_short_key(self):
+        return self.data['short_key']
+
+    def clean_tags(self):
+        return self.data['tags']
+
+    def clean(self):
+        return self.data
 
 class SearchForm(forms.Form):
     this_year = datetime.now().year
     previous_years = datetime.now().year - 1
     # short_key needs to be unique. Either make it the pk or validate it's unique
-    url = forms.CharField(label="URL", max_length=250, required=False)
-    short_key = forms.CharField(label="short key", max_length=30, required=False)
-    tags = forms.CharField(label="tags", max_length=100, required=False)
+    url = forms.CharField(label="URL", max_length=250, required=False, widget=forms.URLInput(attrs={"class": "form-control"}))
+    short_key = forms.CharField(label="short key", max_length=30, required=False, widget=forms.TextInput(attrs={"class": "form-control"}))
+    tags = forms.CharField(label="tags", max_length=100, required=False, widget=forms.TextInput(attrs={"class": "form-control"}))
     # owner = forms.CharField(label="owner", max_length=20, required=False)
-    created_before = forms.DateTimeField(label="created before", required=False, widget=forms.SelectDateWidget(
-        empty_label=("Year", "Month", "Day"), years=range(previous_years, this_year + 1)))
-    created_after = forms.DateTimeField(label="created after", required=False, widget=forms.SelectDateWidget(
-        empty_label=("Year", "Month", "Day"), years=range(previous_years, this_year + 1)))
+    created_before = forms.DateTimeField(label="before", required=False, widget=forms.DateInput(
+        format=('%Y-%m-%d'),
+        attrs={'class': 'form-control',
+               'placeholder': 'Select a date',
+               'type': 'date'
+              }),)
+    created_after = forms.DateTimeField(label="after", required=False, widget=forms.DateInput(
+        format=('%Y-%m-%d'),
+        attrs={'class': 'form-control',
+               'placeholder': 'Select a date',
+               'type': 'date'
+              }),)
 
 class NameForm(forms.Form):
     your_name = forms.CharField(label="Your name", max_length=100)

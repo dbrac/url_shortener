@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darrin's URL Shortener</title>
+<!--    <link rel="stylesheet" href="{% static "shortener/css/style.css" %}">-->
+<!--    <link rel="stylesheet" href="{% static "shortener/css/fieldset.css" %}">-->
+<!--    <link rel="stylesheet" href="{% static "shortener/css/table.css" %}">-->
+<!--    <link rel="stylesheet" href="{% static "shortener/css/forms.css" %}">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {background-color: #e3e2e1;}
+        footer {background-color: #e3e2e1;}
+        .errorlist {color: red;}
+    </style>
+</head>
+
+
+<body class="bg-body">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+
+      <div class="container-fluid">
+        <a class="navbar-brand h3" href="#">Darrin's URL Shortener</a>
+        <ul class="navbar-nav navbar-right">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'search' %}">Search</a>
+          </li>
+        </ul>
+      </div>
+
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row m-5">
+            <div class="col"></div>
+            <div class="col-6">
+                {% block content %}
+                {% endblock %}
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <footer class="fixed-bottom text-center bg-dark text-light">
+                    <p class="m-0">&copy; For internal use only. Contains information that may not be disclosed externally.</p>
+                </footer>
+            </div>
+        </div>
+
+    </div>
+
+
+    </div>
+</body>
+
+</html>

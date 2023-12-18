@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.views import View
 from shortener.models import Shortener
+from .tables import ShortenerResultsTable
+from django_tables2 import SingleTableView
 
-from .forms import NameForm, ShortenerForm, SearchForm
+from .forms import NameForm, ShortenerForm, SearchForm, UpdateShortenerForm
 from django.contrib import messages
 from .models import Shortener
 from django.shortcuts import redirect
@@ -44,11 +46,40 @@ class Search(View):
         shortener_results = list()
         if len(args) > 0:
             # TODO add date time filters
-            shortener_results = list(Shortener.objects.filter(**args).values_list("short_key", "url", "createdDate"))
+            # shortener_list = list(Shortener.objects.filter(**args).values_list("short_key", "url", "tags", "createdDate"))
+            shortener_list = Shortener.objects.filter(**args).values_list("short_key", "url", "tags", "createdDate")
+            shortener_results = Shortener.objects.filter(**args)
+            shortener_table = ShortenerResultsTable(shortener_results)
         else:
             messages.success(request, 'No Results!')
 
-        return render(request, 'search.html', {"form": form, "shortener_results": shortener_results})
+        # return render(request, 'search.html', {"form": form, "shortener_results": shortener_results})
+        return render(request, 'search.html', {"form": form, "shortener_results": shortener_table,
+                                               "shortener_list": shortener_list, "shortener_queryset": shortener_results})
+
+
+class ShortenerView(View):
+
+    def get(self, request, shortener_id):
+        shortener_record = Shortener.objects.get(pk=shortener_id)
+        form = UpdateShortenerForm({
+            "short_key": shortener_record.short_key,
+            "url": shortener_record.url,
+            "tags": shortener_record.tags,
+            "active_duration": shortener_record.active_duration
+        })
+        return render(request, 'update.html', {"form": form})
+
+    def delete(self, request, shortener_id):
+        form = ShortenerForm
+        shortener_record = Shortener.objects.get(pk=shortener_id)
+        # shortener_record.delete()
+        messages.success(request, 'Shortener Deleted!')
+        return render(request, 'search.html', {"form": form} )
+
+    # make put and delet methods then pass in a request type for post, then execute either put or delete. the form actions
+    # will call the post with data to decide what to do
+
 
 
 class Redirect(View):
