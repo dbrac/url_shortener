@@ -1,6 +1,6 @@
 {% extends "main.html" %}
 {% block content %}
-<form action="/" method="POST" class="bg-light bg-gradient p-3 border border-secondary border-1 rounded border-opacity-25">
+<form action="/shortener" method="POST" class="bg-light bg-gradient p-3 border border-secondary border-1 rounded border-opacity-25">
     {% csrf_token %}
     <div class="row mb-3 mt-5">
       <label for="{{ form.url.id_for_label }}" class="col-sm-2 col-form-label text-end">{{ form.url.label }}</label>
@@ -37,8 +37,9 @@
 
     <div class="row mb-3">
         <div class="offset-sm-2">
-            <button type="submit" class="btn btn-primary btn-secondary bg-gradient">Update</button>
-            <button type="submit" class="btn btn-primary btn-secondary bg-gradient" formaction="shortener" method="Delete">Delete</button>
+            <button type="submit" class="btn btn-primary btn-secondary bg-gradient" name="formaction" value="update">update</button>
+            <button type="submit" class="btn btn-primary btn-secondary bg-gradient" name="formaction" value="delete">delete</button>
+            <input type="hidden" name="shortener_id" value="{{ form.id }}">
         </div>
     </div>
 

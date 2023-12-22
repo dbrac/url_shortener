@@ -1,0 +1,6 @@
+implement date query
+disable updating the short key
+disable updating the active duration. insteand, dispaly the expiration date.
+fix the bound form rendered after delete. for some reason does not render the active duration
+refactor templates to be efficient
+did i loose some css on the search form?

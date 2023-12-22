@@ -9,7 +9,7 @@ import re
 class ShortenerForm(ModelForm):
     class Meta:
         model = Shortener
-        fields = ["url", "short_key", "tags", "active_duration"]
+        fields = ["id","url", "short_key", "tags", "active_duration"]
         # this is used if you just put {{ form }} in your template
         # I ended up not doing this so I specify in the template as form labels how they would be presented
         labels = {

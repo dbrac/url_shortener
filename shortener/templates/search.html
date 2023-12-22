@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 {% load render_table from django_tables2 %}
 {% block content %}
-<form action="/search" method="POST" class="bg-light bg-gradient p-3 border border-secondary border-1 rounded border-opacity-25">
+<form action="/shortener" method="GET" class="bg-light bg-gradient p-3 border border-secondary border-1 rounded border-opacity-25">
     {% csrf_token %}
     <div class="row mb-3 mt-5">
       <label for="{{ form.url.id_for_label }}" class="col-sm-2 col-form-label text-end">{{ form.url.label }}</label>
@@ -45,7 +45,7 @@
 
     <div class="row mb-3">
         <div class="offset-sm-2">
-            <button type="submit" class="btn btn-primary btn-secondary bg-gradient">Search</button>
+            <button type="submit" class="btn btn-primary btn-secondary bg-gradient" name="formaction" value="list">Search</button>
         </div>
     </div>
 
@@ -133,7 +133,7 @@
         {% for shortener in shortener_queryset %}
             <tr>
                 <td>{{shortener.id}}</td>
-                <td><a href="search/{{ shortener.id }}">{{ shortener.short_key|default:"" }}</td>
+                <td><a href="shortener/{{ shortener.id }}">{{ shortener.short_key|default:"" }}</td>
                 <td>{{ shortener.url|default:"" }}</td>
                 <td>{{ shortener.tags|default:"" }}</td>
                 <td>{{ shortener.createdDate|default:"" }}</td>

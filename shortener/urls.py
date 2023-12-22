@@ -5,9 +5,12 @@ from . import views
 
 urlpatterns = [
     path('', views.Index.as_view(), name='index'),
+    path('shortener/<int:shortener_id>', views.ShortenerView.as_view(), name='shortener'),
+    path('shortener', views.ShortenerView.as_view(), name='shortener'),
     path('search', views.Search.as_view(), name='search'),
-    path(r'^<short_key>', views.Redirect.as_view()),
-    path('search/<int:shortener_id>', views.ShortenerView.as_view(), name='search_by_id'),
-    path('shortener/<int:shortener_id>', views.ShortenerView.as_view(), name='shortener')
-    #TODO shortener/id (list, put, delete)
+    path('<short_key>', views.Redirect.as_view()),
+    #TODO shortener/id (get, put, delete)
+    #TODO shortener (list, post)
+    #TODO /<short_key> (GET)
+    #TODO / (GET) index
 ]
