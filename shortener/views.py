@@ -4,13 +4,17 @@ from shortener.models import Shortener
 from .tables import ShortenerResultsTable
 from django_tables2 import SingleTableView
 
-from .forms import NameForm, ShortenerForm, SearchForm, UpdateShortenerForm
+from .forms import ShortenerForm, SearchForm, UpdateShortenerForm
 from django.contrib import messages
 from .models import Shortener
 from django.shortcuts import redirect
+from django.utils.timezone import make_aware
+# from datetime import datetime, timedelta
+import datetime
 
 class Index(View):
 
+    # render index form used for create
     def get(self, request):
         form = ShortenerForm
         return render(request, 'index.html', {"form": form})
@@ -18,12 +22,14 @@ class Index(View):
 
 class Search(View):
 
+    # render search form
     def get(self, request):
         form = SearchForm
         return render(request, 'search.html', {"form": form})
 
 
 class ShortenerView(View):
+    # handles the form actions for retrieving and modifying shortener's
 
     def get(self, request, shortener_id=None):
         if request.GET.get("formaction", None) == "list":
@@ -35,30 +41,28 @@ class ShortenerView(View):
                 args["short_key__contains"] = request.GET["short_key"]
             if request.GET["tags"]:
                 args["tags__contains"] = request.GET["tags"]
+            if request.GET["created_before"]:
+                date = request.GET.get('created_before', '').split('-')
+                args["createdDate__lt"] = datetime.date(int(date[0]), int(date[1]), int(date[2]))
+            if request.GET["created_after"]:
+                date = request.GET.get('created_after', '').split('-')
+                args["createdDate__gt"] = datetime.date(int(date[0]), int(date[1]), int(date[2]))
 
             shortener_results = list()
             if len(args) > 0:
-                # TODO add date time filters
-                # shortener_list = list(Shortener.objects.filter(**args).values_list("short_key", "url", "tags", "createdDate"))
-                shortener_list = Shortener.objects.filter(**args).values_list("short_key", "url", "tags", "createdDate")
                 shortener_results = Shortener.objects.filter(**args)
-                shortener_table = ShortenerResultsTable(shortener_results)
             else:
                 messages.success(request, 'No Results!')
 
-            # return render(request, 'search.html', {"form": form, "shortener_results": shortener_results})
-            return render(request, 'search.html', {"form": form, "shortener_results": shortener_table,
-                                                   "shortener_list": shortener_list,
-
-                                                      "shortener_queryset": shortener_results})
-        # GET
+            return render(request, 'search.html', {"form": form, "shortener_queryset": shortener_results})
+        # GET - renders the update shortener form
         else:
             shortener_record = Shortener.objects.get(pk=shortener_id)
             form = UpdateShortenerForm({
                 "short_key": shortener_record.short_key,
                 "url": shortener_record.url,
                 "tags": shortener_record.tags,
-                "active_duration": shortener_record.active_duration
+                "expires": shortener_record.expires.strftime("%Y-%m-%d") if shortener_record else None # shouldn't run into this any more
             })
             return render(request, 'update.html', {"form": form})
 
@@ -69,6 +73,9 @@ class ShortenerView(View):
             form = ShortenerForm(request.POST)
             valid = form.is_valid()
             if form.is_valid():
+                # fake save so we can modify before writing to db
+                form = form.save(commit=False)
+                form.expires = datetime.datetime.today() + datetime.timedelta(int(request.POST["active_duration"])*365/12)
                 form.save()
                 messages.success(request, 'Created Successfully!')
                 form = ShortenerForm
@@ -84,7 +91,7 @@ class ShortenerView(View):
                 "short_key": shortener_record.short_key,
                 "url": shortener_record.url,
                 "tags": shortener_record.tags,
-                "active_duration": shortener_record.active_duration
+                "expires": shortener_record.expires.strftime("%Y-%m-%d")
             })
             return render(request, 'update.html', {"form": form})
 
@@ -95,10 +102,10 @@ class ShortenerView(View):
                 "short_key": shortener_record.short_key,
                 "url": shortener_record.url,
                 "tags": shortener_record.tags,
-                "active_duration": shortener_record.active_duration
+                "expires": shortener_record.expires.strftime("%Y-%m-%d")
             })
             shortener_record.delete()
-            return render(request, 'search.html', {"form": form})
+            return render(request, 'update.html', {"form": form})
 
 
 class Redirect(View):

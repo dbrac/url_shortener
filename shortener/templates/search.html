@@ -1,7 +1,6 @@
 {% extends "main.html" %}
-{% load render_table from django_tables2 %}
 {% block content %}
-<form action="/shortener" method="GET" class="bg-light bg-gradient p-3 border border-secondary border-1 rounded border-opacity-25">
+<form action="/shortener" method="GET" class="bg-light bg-gradient p-3 border border-secondary border rounded border-opacity-25">
     {% csrf_token %}
     <div class="row mb-3 mt-5">
       <label for="{{ form.url.id_for_label }}" class="col-sm-2 col-form-label text-end">{{ form.url.label }}</label>
@@ -69,74 +68,26 @@
     </div>
 </form>
 
-
-<!--{% if shortener_results %}-->
-<!--    {% render_table shortener_results %}-->
-<!--{% endif %}-->
-
-<!--<table class="table table-striped table-sm table-bordered">-->
-<!--  <thead>-->
-<!--    <tr>-->
-<!--      <th scope="col">#</th>-->
-<!--      <th scope="col">First</th>-->
-<!--      <th scope="col">Last</th>-->
-<!--      <th scope="col">Handle</th>-->
-<!--    </tr>-->
-<!--  </thead>-->
-<!--  <tbody >-->
-<!--    <tr>-->
-<!--      <th scope="row">1</th>-->
-<!--      <td>Mark</td>-->
-<!--      <td>Otto</td>-->
-<!--      <td>@mdo</td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--      <th scope="row">2</th>-->
-<!--      <td>Jacob</td>-->
-<!--      <td>Thornton</td>-->
-<!--      <td>@fat</td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--      <th scope="row">3</th>-->
-<!--      <td colspan="2">Larry the Bird</td>-->
-<!--      <td>@twitter</td>-->
-<!--    </tr>-->
-<!--  </tbody>-->
-<!--</table>-->
-
-<!--<table class="table table-striped table-sm table-bordered mt-5">-->
-<!--    <tr>-->
-<!--        <th>key</th>-->
-<!--        <th>long url</th>-->
-<!--        <th>tags</th>-->
-<!--        <th>created</th>-->
-<!--    </tr>-->
-<!--    {% for result in shortener_list %}-->
-<!--        <tr>-->
-<!--            {% for x in result %}-->
-<!--                <td>{{ x | default:"" }}</td>-->
-<!--            {% endfor %}-->
-<!--        </tr>-->
-<!--    {% endfor %}-->
-<!--</table>-->
-
+<!--contrast on some monitors will cause table stripping to be not visible. May need to use darker colors-->
 {% if shortener_queryset %}
 <table class="table table-striped table-sm table-bordered mt-5">
     <thead>
-        <th>id</th>
-        <th>key</th>
-        <th>long url</th>
-        <th>tags</th>
-        <th>created</th>
+        <tr>
+            <th>key</th>
+            <th>long url</th>
+            <th>tags</th>
+            <th>created</th>
+            <th>expires</th>
+        </tr>
     </thead>
     <tbody>
         {% for shortener in shortener_queryset %}
             <tr>
-                <td>{{shortener.id}}</td>
                 <td><a href="shortener/{{ shortener.id }}">{{ shortener.short_key|default:"" }}</td>
-                <td>{{ shortener.url|default:"" }}</td>
+                <td><a href="{{ shortener.url|default:'' }}" target="_blank">{{ shortener.url|default:"" }}</td>
                 <td>{{ shortener.tags|default:"" }}</td>
                 <td>{{ shortener.createdDate|default:"" }}</td>
+                <td>{{ shortener.expires|default:"" }}</td>
             </tr>
         {% endfor %}
     </tbody>

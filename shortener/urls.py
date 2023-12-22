@@ -8,9 +8,9 @@ urlpatterns = [
     path('shortener/<int:shortener_id>', views.ShortenerView.as_view(), name='shortener'),
     path('shortener', views.ShortenerView.as_view(), name='shortener'),
     path('search', views.Search.as_view(), name='search'),
-    path('<short_key>', views.Redirect.as_view()),
-    #TODO shortener/id (get, put, delete)
-    #TODO shortener (list, post)
-    #TODO /<short_key> (GET)
-    #TODO / (GET) index
+    path('<short_key>', views.Redirect.as_view())
 ]
+# TODO shortener/id (get, put, delete)
+# TODO shortener (list, post)
+# TODO /<short_key> (GET)
+# TODO / (GET) index

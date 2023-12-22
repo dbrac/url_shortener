@@ -3,13 +3,13 @@ from django.forms import ModelForm, SelectDateWidget, TextInput
 from shortener.models import Shortener
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 
 class ShortenerForm(ModelForm):
     class Meta:
         model = Shortener
-        fields = ["id","url", "short_key", "tags", "active_duration"]
+        fields = ["url", "short_key", "tags", "active_duration"]
         # this is used if you just put {{ form }} in your template
         # I ended up not doing this so I specify in the template as form labels how they would be presented
         labels = {
@@ -47,12 +47,18 @@ class ShortenerForm(ModelForm):
         return tags
 
     def clean(self):
-        # general non field errors
-        form_data = self.cleaned_data
-        # raise ValidationError("blah")
-        return form_data
+        return self.cleaned_data
+
 
 class UpdateShortenerForm(ShortenerForm):
+    class Meta:
+        model = Shortener
+        fields = ["url", "short_key", "tags"]
+
+    expires = forms.DateField(label="expires", required=False, widget=forms.TextInput(attrs={"class": "form-control", "readonly": "readonly"}))
+    short_key = forms.CharField(label="short key", max_length=30, required=False,
+                                widget=forms.TextInput(attrs={"class": "form-control", "readonly": "readonly"}))
+
     def clean_short_key(self):
         return self.data['short_key']
 
@@ -62,11 +68,12 @@ class UpdateShortenerForm(ShortenerForm):
     def clean(self):
         return self.data
 
+
 class SearchForm(forms.Form):
     this_year = datetime.now().year
     previous_years = datetime.now().year - 1
     # short_key needs to be unique. Either make it the pk or validate it's unique
-    url = forms.CharField(label="URL", max_length=250, required=False, widget=forms.URLInput(attrs={"class": "form-control"}))
+    url = forms.CharField(label="URL", max_length=250, required=False, widget=forms.TextInput(attrs={"class": "form-control"}))
     short_key = forms.CharField(label="short key", max_length=30, required=False, widget=forms.TextInput(attrs={"class": "form-control"}))
     tags = forms.CharField(label="tags", max_length=100, required=False, widget=forms.TextInput(attrs={"class": "form-control"}))
     # owner = forms.CharField(label="owner", max_length=20, required=False)
@@ -82,6 +89,3 @@ class SearchForm(forms.Form):
                'placeholder': 'Select a date',
                'type': 'date'
               }),)
-
-class NameForm(forms.Form):
-    your_name = forms.CharField(label="Your name", max_length=100)
