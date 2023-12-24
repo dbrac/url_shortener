@@ -1,9 +1,6 @@
 from django.shortcuts import render
 from django.views import View
 from shortener.models import Shortener
-from .tables import ShortenerResultsTable
-from django_tables2 import SingleTableView
-
 from .forms import ShortenerForm, SearchForm, UpdateShortenerForm
 from django.contrib import messages
 from .models import Shortener
