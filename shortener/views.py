@@ -28,6 +28,7 @@ class Search(View):
 class ShortenerView(View):
     # handles the form actions for retrieving and modifying shortener's
 
+    # list
     def get(self, request, shortener_id=None):
         if request.GET.get("formaction", None) == "list":
             form = SearchForm
@@ -109,6 +110,8 @@ class Redirect(View):
     # only implemented get. intended use is for users web browsers and not applications.
     def get(self, request, short_key):
         shortener_results = Shortener.objects.get(short_key__iexact=short_key)
+        shortener_results.hits += 1
+        shortener_results.save()
         return redirect(shortener_results.url)
 
 

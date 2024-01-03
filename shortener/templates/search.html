@@ -78,6 +78,7 @@
             <th>tags</th>
             <th>created</th>
             <th>expires</th>
+            <th>hits</th>
         </tr>
     </thead>
     <tbody>
@@ -88,6 +89,7 @@
                 <td>{{ shortener.tags|default:"" }}</td>
                 <td>{{ shortener.createdDate|default:"" }}</td>
                 <td>{{ shortener.expires|default:"" }}</td>
+                <td>{{ shortener.hits|default:"0" }}</td>
             </tr>
         {% endfor %}
     </tbody>
