@@ -46,13 +46,17 @@ class ShortenerView(View):
                 date = request.GET.get('created_after', '').split('-')
                 args["createdDate__gt"] = datetime.date(int(date[0]), int(date[1]), int(date[2]))
 
-            shortener_results = list()
+            shortener_results = None
             if len(args) > 0:
                 shortener_results = Shortener.objects.filter(**args)
             else:
                 messages.success(request, 'No Results!')
 
-            return render(request, 'search.html', {"form": form, "shortener_queryset": shortener_results})
+            if shortener_results:
+                return render(request, 'search.html', {"form": form, "shortener_queryset": shortener_results})
+            else:
+                return render(request, 'search.html', {"form": form})
+
         # GET - renders the update shortener form
         else:
             shortener_record = Shortener.objects.get(pk=shortener_id)
@@ -73,7 +77,8 @@ class ShortenerView(View):
             if form.is_valid():
                 # fake save so we can modify before writing to db
                 form = form.save(commit=False)
-                form.expires = datetime.datetime.today() + datetime.timedelta(int(request.POST["active_duration"])*365/12)
+                expires = datetime.datetime.today() + datetime.timedelta(int(request.POST["active_duration"])*365/12)
+                form.expires = make_aware(expires)
                 form.save()
                 messages.success(request, 'Created Successfully!')
                 form = ShortenerForm

@@ -55,6 +55,8 @@ class UpdateShortenerForm(ShortenerForm):
         model = Shortener
         fields = ["url", "short_key", "tags"]
 
+    url = forms.URLField(label="url", required=True, widget=forms.URLInput(attrs={"class": "form-control"}))
+    tags = forms.CharField(label="tags", required=True, widget=forms.TextInput(attrs={"class": "form-control"}))
     expires = forms.DateField(label="expires", required=False, widget=forms.TextInput(attrs={"class": "form-control", "readonly": "readonly"}))
     short_key = forms.CharField(label="short key", max_length=30, required=False,
                                 widget=forms.TextInput(attrs={"class": "form-control", "readonly": "readonly"}))
