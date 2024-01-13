@@ -6,6 +6,8 @@ from django.contrib import messages
 from .models import Shortener
 from django.shortcuts import redirect
 from django.utils.timezone import make_aware
+from django.http import HttpResponseNotFound, Http404
+from django.core.exceptions import ObjectDoesNotExist
 # from datetime import datetime, timedelta
 import datetime
 
@@ -112,11 +114,16 @@ class ShortenerView(View):
 
 
 class Redirect(View):
-    # only implemented get. intended use is for users web browsers and not applications.
+
     def get(self, request, short_key):
-        shortener_results = Shortener.objects.get(short_key__iexact=short_key)
-        shortener_results.hits += 1
-        shortener_results.save()
-        return redirect(shortener_results.url)
-
-
+        not_found = "<h1>Shortener not found</h1>"
+        if short_key:
+            try:
+                shortener_results = Shortener.objects.get(short_key__iexact=short_key)
+                shortener_results.hits += 1
+                shortener_results.save()
+            except ObjectDoesNotExist:
+                return HttpResponseNotFound(not_found)
+            return redirect(shortener_results.url)
+        else:
+            return HttpResponseNotFound(not_found)
