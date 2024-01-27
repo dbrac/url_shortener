@@ -14,7 +14,7 @@ class Shortener(models.Model):
     tags = models.CharField(max_length=100, blank=True)
     active_duration = models.CharField(max_length=2, choices=DURATIONS)
     createdDate = models.DateTimeField(auto_now_add=True)
-    expires = models.DateTimeField()
+    expires = models.DateTimeField(null=True)
     hits = models.IntegerField(default=0)
 
     def __str__(self):
