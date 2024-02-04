@@ -128,3 +128,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# DNS name for the shortener service. The intention is to create the shortest possible url by using just two characters separated by a "."
+SHORTENER_HOSTNAME = 'd.b'

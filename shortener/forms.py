@@ -1,3 +1,4 @@
+from django.conf import settings
 from django import forms
 from django.forms import ModelForm, SelectDateWidget, TextInput
 from shortener.models import Shortener
@@ -13,7 +14,8 @@ class ShortenerForm(ModelForm):
         # this is used if you just put {{ form }} in your template
         # I ended up not doing this so I specify in the template as form labels how they would be presented
         labels = {
-            'short_key': 'https://d.b/',
+            # 'short_key': 'https://d.b/',
+            'short_key': 'http://' + settings.SHORTENER_HOSTNAME + '/',
             'active_duration': 'active for',
             'tags': 'tags'
         }
