@@ -32,20 +32,20 @@ class ShortenerForm(ModelForm):
     acknowledgment = forms.BooleanField(widget=forms.CheckboxInput(attrs={"class": "form-check-input"}))
 
     def clean_short_key(self):
+        # doesn't hurt to do this but I also set unique=True on the model field.
         short_key = self.cleaned_data['short_key']
         key_lookup = Shortener.objects.filter(short_key__iexact=short_key)
         if len(key_lookup) > 0:
             raise ValidationError("Shortener already exists. Please use a unique name.")
-        if not short_key.isalnum():
-            raise ValidationError("only alphanumeric values allowed")
+        if not re.search("^[0-9a-zA-Z]+(-[0-9a-zA-Z]+)*$", short_key):
+            raise ValidationError('Only alphanumeric and with hypens allowed. E.g. "my-orders"')
         return short_key
 
     def clean_tags(self):
         tags = self.cleaned_data['tags']
         # TODO allow comma's
         if  len(tags) > 0 and not re.search("^[0-9a-zA-Z]+(,[0-9a-zA-Z]+)*$", tags):
-            raise ValidationError("Only alphanumeric values separated by a single comma are allowed. Do not include "
-                                  "a trailing comma.")
+            raise ValidationError("Only alphanumeric values separated by a single comma are allowed. E.g. tag,tag")
         return tags
 
     def clean(self):
@@ -58,19 +58,15 @@ class UpdateShortenerForm(ShortenerForm):
         fields = ["url", "short_key", "tags"]
 
     url = forms.URLField(label="url", required=True, widget=forms.URLInput(attrs={"class": "form-control"}))
-    tags = forms.CharField(label="tags", required=True, widget=forms.TextInput(attrs={"class": "form-control"}))
+    tags = forms.CharField(label="tags", required=False, widget=forms.TextInput(attrs={"class": "form-control"}))
     expires = forms.DateField(label="expires", required=False, widget=forms.TextInput(attrs={"class": "form-control", "readonly": "readonly"}))
     short_key = forms.CharField(label="short key", max_length=30, required=False,
                                 widget=forms.TextInput(attrs={"class": "form-control", "readonly": "readonly"}))
 
     def clean_short_key(self):
+        # override
         return self.data['short_key']
 
-    def clean_tags(self):
-        return self.data['tags']
-
-    def clean(self):
-        return self.data
 
 
 class SearchForm(forms.Form):
