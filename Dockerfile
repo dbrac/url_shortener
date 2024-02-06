@@ -17,6 +17,8 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # Second, copy source files since they will change with each build.
 COPY --chown=python . /usr/src/app/
 USER python:python
+
+# The port binding is in gunicorn.sh
 EXPOSE 8000
 
 RUN chmod +x /usr/src/app/gunicorn.sh
