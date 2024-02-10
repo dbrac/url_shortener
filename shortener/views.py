@@ -6,10 +6,12 @@ from django.contrib import messages
 from .models import Shortener
 from django.shortcuts import redirect
 from django.utils.timezone import make_aware
-from django.http import HttpResponseNotFound, Http404
+from django.http import HttpResponseNotFound, Http404, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 # from datetime import datetime, timedelta
 import datetime
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 class Index(View):
 
@@ -127,3 +129,14 @@ class Redirect(View):
             return redirect(shortener_results.url)
         else:
             return HttpResponseNotFound(not_found)
+
+# disable csrf check because this won't be called from the browser.        
+@method_decorator(csrf_exempt, name='dispatch')
+class ShortenerPurge(View):
+
+    def post(self, request):
+        expired_shorteners = Shortener.objects.filter(expires__lt=datetime.datetime.today())
+        for shortener in expired_shorteners:
+            shortener.delete()
+        return HttpResponse("")
+    
