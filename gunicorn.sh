@@ -3,6 +3,9 @@
 echo Migrate database if needed..
 python ./manage.py migrate
 
+echo Load fixtures if needed..
+python ./manage.py loaddata sample
+
 echo Collect static files if needed..
 python ./manage.py collectstatic --noinput
 

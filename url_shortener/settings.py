@@ -131,3 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # DNS name for the shortener service. The intention is to create the shortest possible url by using just two characters separated by a "."
 SHORTENER_HOSTNAME = 'd.b'
+
+FIXTURE_DIRS = [
+    'shortener/fixtures/sample.json'
+]
