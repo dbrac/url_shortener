@@ -44,8 +44,8 @@ class ShortenerForm(ModelForm):
     def clean_tags(self):
         tags = self.cleaned_data['tags']
         # TODO allow comma's
-        if  len(tags) > 0 and not re.search("^[0-9a-zA-Z]+(,[0-9a-zA-Z]+)*$", tags):
-            raise ValidationError("Only alphanumeric values separated by a single comma are allowed. E.g. tag,tag")
+        if  len(tags) > 0 and not re.search("^[0-9a-zA-Z]+(,[ ]?[0-9a-zA-Z]+)*$", tags):
+            raise ValidationError("Only alphanumeric values separated by a single comma are allowed. E.g. tag, tag")
         return tags
 
     def clean(self):
