@@ -1,0 +1,8 @@
+db.sqlite3
+Dockerfile
+.dockerignore
+.git
+.gitignore
+.idea
+.vscode
+kubernetes.yaml
