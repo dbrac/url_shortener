@@ -12,6 +12,9 @@ from django.core.exceptions import ObjectDoesNotExist
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.core.paginator import Paginator
+import json
+from django.conf import settings
 
 class Index(View):
 
@@ -32,8 +35,14 @@ class Search(View):
 class ShortenerView(View):
     # handles the form actions for retrieving and modifying shortener's
 
-    # list
-    def get(self, request, shortener_id=None):
+    # paginate queryset
+    def get_page(self, shortener_results, request):
+        paginator = Paginator(shortener_results, settings.PAGE_SIZE)
+        page_number = request.GET.get("page")
+        return paginator.get_page(page_number)
+
+    # list - render search results as a table
+    def get(self, request, shortener_id=None, page=None):
         if request.GET.get("formaction", None) == "list":
             form = SearchForm
             args = dict()
@@ -57,11 +66,22 @@ class ShortenerView(View):
                 messages.success(request, 'No Results!')
 
             if shortener_results:
-                return render(request, 'search.html', {"form": form, "shortener_queryset": shortener_results})
+                # save query in the session for future page requests and render results table
+                page_obj = self.get_page(shortener_results, request)
+                request.session["query"] = json.dumps(args)
+                return render(request, 'search.html', {"form": form, "page_obj": page_obj})
             else:
+                # render empty search form if there were no results
                 return render(request, 'search.html', {"form": form})
 
-        # GET - renders the update shortener form
+        # if there's no form action but we have a page arg then render the requested page using previous query
+        elif request.GET.get("page", None) is not None and request.session.get("query", None) is not None:
+            form = SearchForm
+            shortener_results = Shortener.objects.filter(**json.loads(request.session.get("query", None)))
+            page_obj = self.get_page(shortener_results, request)
+            return render(request, 'search.html', {"form": form, "page_obj": page_obj})
+
+        # GET - render shortener update form
         else:
             shortener_record = Shortener.objects.get(pk=shortener_id)
             form = UpdateShortenerForm({
@@ -71,7 +91,6 @@ class ShortenerView(View):
                 "expires": shortener_record.expires.strftime("%Y-%m-%d") if shortener_record else None # shouldn't run into this any more
             })
             return render(request, 'update.html', {"form": form})
-
 
     def post(self, request):
         form = ShortenerForm
@@ -117,6 +136,7 @@ class ShortenerView(View):
 
 class Redirect(View):
 
+    # redirect short urls to long urls
     def get(self, request, short_key):
         not_found = "<h1>Shortener not found</h1>"
         if short_key:
@@ -134,6 +154,7 @@ class Redirect(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class ShortenerPurge(View):
 
+    # delete expired records. Scheduled this call from a cronjob.
     def post(self, request):
         expired_shorteners = Shortener.objects.filter(expires__lt=datetime.datetime.today())
         for shortener in expired_shorteners:

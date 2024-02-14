@@ -135,3 +135,5 @@ SHORTENER_HOSTNAME = 'd.b'
 FIXTURE_DIRS = [
     'shortener/fixtures/sample.json'
 ]
+
+PAGE_SIZE = 5
