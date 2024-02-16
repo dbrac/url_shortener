@@ -6,3 +6,4 @@ Dockerfile
 .idea
 .vscode
 kubernetes.yaml
+images/
