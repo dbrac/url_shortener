@@ -339,7 +339,7 @@
     "fields": {
       "url": "https://www.linkedin.com/in/darrin-brackett-80835449/",
       "short_key": "linkedin",
-      "tags": "darrin, linkedin",
+      "tags": "darrin, linkedin, all",
       "active_duration": "12",
       "createdDate": "2024-02-10T17:55:56.912Z",
       "expires": "2025-02-09T17:55:56.911Z",
@@ -352,7 +352,7 @@
     "fields": {
       "url": "https://www.amazon.com/your-orders/orders?_encoding=UTF8&ref_=nav_orders_first",
       "short_key": "orders",
-      "tags": "amazon, orders",
+      "tags": "amazon, orders, all",
       "active_duration": "12",
       "createdDate": "2024-02-10T18:26:01.765Z",
       "expires": "2025-02-09T18:26:01.764Z",
@@ -365,7 +365,7 @@
     "fields": {
       "url": "https://docs.docker.com/engine/reference/builder/#parser-directives",
       "short_key": "docker",
-      "tags": "docker, docs",
+      "tags": "docker, docs, all",
       "active_duration": "12",
       "createdDate": "2024-02-10T18:27:11.034Z",
       "expires": "2025-02-09T18:27:11.034Z",
@@ -378,7 +378,7 @@
     "fields": {
       "url": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
       "short_key": "k8s",
-      "tags": "k8s, kubernetes, doc",
+      "tags": "k8s, kubernetes, doc, all",
       "active_duration": "12",
       "createdDate": "2024-02-10T18:27:49.689Z",
       "expires": "2025-02-09T18:27:49.688Z",
@@ -391,7 +391,7 @@
     "fields": {
       "url": "https://docs.djangoproject.com/en/5.0/",
       "short_key": "django",
-      "tags": "django, doc",
+      "tags": "django, doc, all",
       "active_duration": "12",
       "createdDate": "2024-02-10T18:28:45.483Z",
       "expires": "2025-02-09T18:28:45.483Z",
@@ -404,7 +404,7 @@
     "fields": {
       "url": "https://docs.python.org/3/library/index.html",
       "short_key": "python",
-      "tags": "python, doc",
+      "tags": "python, doc, all",
       "active_duration": "12",
       "createdDate": "2024-02-10T18:30:21.484Z",
       "expires": "2025-02-09T18:30:21.484Z",
