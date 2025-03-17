@@ -14,7 +14,7 @@ Application stack:
 - Deployment: Instructions for running the app are provided below
 
 # Usage
-I have a demo build of this application on dockerhub. There is a sqlite database in the container which is initialized with sample data
+I have a demo build of this application on Docker Hub. There is a SQLite database in the container which is initialized with sample data
 every time the container starts and is lost every time the container terminates. 
 
 ## Run on Docker
@@ -58,6 +58,10 @@ Use the kubernetes.yaml to deploy onto kubernetes. Make sure to adjust the ingre
 
     kubectl apply -f kubernetes.yaml
 
+### Purge expired shortener records
+
+This application includes an API at /shortener/purge that allows you to clean up expired records from the database. You can schedule this endpoint to run periodically to keep expired records cleaned up. I've included a Kubernetes CronJob in the [Kubernetes.yaml](kubernetes.yaml) manifest to automate this process. If you run the app outside of Kubernetes, you'll need to implement this yourself.
+
 # Build
 
 If you want to make updates to the application or rebuild the Docker image locally for any reason:
@@ -97,7 +101,7 @@ To run the application locally, follow these steps:
 
 - Run development web server on port 9000
     ```
-    manage.py runserver 0.0.0.0:9000
+    python manage.py runserver 0.0.0.0:9000
     ```
 
 - Alternatively, you can debug in VS Code using this run configuration:
@@ -132,7 +136,7 @@ To run the application locally, follow these steps:
 
 # UI Preview
 
-Here are some example screenshots of the user inferface:
+Here are some example screenshots of the user interface:
 
 ![alt text](images/image-1.png)
 

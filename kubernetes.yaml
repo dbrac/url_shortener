@@ -59,3 +59,23 @@ spec:
              name: url-shortener-svc
              port:
                number: 80
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: shortener-purge
+spec:
+  schedule: "0 0 * * *"  # This will run the purge job daily at midnight
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: purge-expired-records
+              image: curlimages/curl:latest  # Using curlimages/curl which has curl installed
+              command:
+                - "curl"
+                - "-X"
+                - "POST"
+                - "http://d.b/shortener/purge"
+          restartPolicy: OnFailure
